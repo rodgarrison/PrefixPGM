@@ -1,3 +1,15 @@
 # Prefix PGM-Index
+Repository is a fork of https://github.com/gvinciguerra/PrefixPGM with modifications for Intel PMU micro benchmarks
 
-This repository contains a proof-of-concept extension of the **PGM-index** ([website](https://pgm.di.unipi.it) | [repo](https://github.com/gvinciguerra/PGM-index)) to support fixed-length strings via wide integers.
+# Requirements
+* Linux with Intel Skylake PMU compatible Processor
+* Last tested Sept 2022 on https://console.equinix.com On-demand c3.small.x86 Ubuntu 22.04 LTS ($.75/hr)
+
+# Build
+* mkdir build
+* cd build
+* cmake ..
+* make -j
+
+# Running
+Inside the build directory do the following:

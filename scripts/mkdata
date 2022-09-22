@@ -1,0 +1,43 @@
+#!/bin/bash
+
+HELPER="../generator.tsk"
+
+# these files have one word (key) per line
+LINE_FILES=""
+
+# URLS
+echo
+URL="http://data.law.di.unimi.it/webdata/it-2004/it-2004.urls.gz"
+FILE="url.txt.gz"
+rm -f $FILE
+OUTFILE="url.txt"
+echo "Reading $URL writing $FILE..."
+curl $URL -o $FILE
+rm -f ${OUTFILE} 
+echo "unzipping ${FILE}..."
+gunzip ${FILE}
+LINE_FILES="${LINE_FILES} ${OUTFILE}"
+
+# now deal with the files with one key per line. here -l is added
+# to generator commands, and line2word is not run
+for f in $LINE_FILES
+do
+  echo
+  MANIFEST="$MANIFEST $f"
+
+  SORTED="${f}.sorted"
+  echo "unique sorting $f..."
+  sort -u $f > $SORTED
+  MANIFEST="$MANIFEST $SORTED"
+
+  OUTFILE="${f%%.txt}.sorted.bin"
+  echo "converting text file $SORTED to $OUTFILE..."
+  rm -f $OUTFILE
+  $HELPER -m convert-text -i $SORTED -o $OUTFILE -l
+  MANIFEST="$MANIFEST $OUTFILE"
+done
+
+echo
+echo "Dataset Files"
+echo "======================================================================="
+ls -ald $MANIFEST
